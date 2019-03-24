@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MiLab_Final</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="hi_tomer">Hi Tomer!</string>
+    <string name="search">Search</string>
+</resources>
