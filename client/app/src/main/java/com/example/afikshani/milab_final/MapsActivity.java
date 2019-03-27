@@ -76,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String routeRequest = getDirectionsUrl("IDC Herzliya", "Dizengoff Center");
 
+        //לייצר מפוע חדש בכל פעם שחורגים מהמסלול עפ"י נתוני לווין
+
         RouteCalc routeCalc = new RouteCalc();
 
         routeCalc.execute(routeRequest);
@@ -84,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getDirectionsUrl(String origin, String destination) {
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&mode=bicycling+" + "&alternatives=" + true;
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&mode=bicycling+" +"&avoid=highways" + "&alternatives=" + true;
 
         return url;
     }
