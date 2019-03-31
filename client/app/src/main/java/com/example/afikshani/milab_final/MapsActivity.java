@@ -3,12 +3,12 @@ package com.example.afikshani.milab_final;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.ResultReceiver;
+import android.support.annotation.ColorRes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.afikshani.milab_final.helpers.DirectionsJSONParser;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,7 +16,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -35,20 +34,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String currentPolyline;
+    private String destination = "Dizengoff Center";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        String destination = bundle.getString("destination");
+        Bundle bundle = getIntent().getExtras();
+        String userDestination = bundle.getString("destination");
+
+        if (userDestination.isEmpty() == false) {  // if client put a destination address
+            destination = userDestination;
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
     }
 
@@ -64,17 +66,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         // Add a marker in location and move the camera
         LatLng sourceLocation = new LatLng(32.1761179, 34.8362246);
         LatLng destinationLocation = new LatLng(32.0752857, 34.775322);
 
         mMap.addMarker(new MarkerOptions().position(sourceLocation).title("IDC Herzliya"));
-        mMap.addMarker(new MarkerOptions().position(destinationLocation).title("Dizengoff Center"));
+        mMap.addMarker(new MarkerOptions().position(destinationLocation).title(destination));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sourceLocation, 16.0f));
 
-        String routeRequest = getDirectionsUrl("IDC Herzliya", "Dizengoff Center");
+        String routeRequest = getDirectionsUrl("IDC Herzliya", destination);
 
         //לייצר מפוע חדש בכל פעם שחורגים מהמסלול עפ"י נתוני לווין
 
@@ -86,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getDirectionsUrl(String origin, String destination) {
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&mode=bicycling+" +"&avoid=highways" + "&alternatives=" + true;
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&mode=bicycling+" + "&avoid=highways" + "&alternatives=" + true;
 
         return url;
     }
@@ -127,7 +130,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     private class RouteCalc extends AsyncTask<String, Void, String> {
 
         @Override
@@ -148,9 +150,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            ParserTask parserTask = new ParserTask();
+            ParserTask routeParserFromJsonToObject = new ParserTask();
 
-            parserTask.execute(result);
+            routeParserFromJsonToObject.execute(result);
 
         }
 
@@ -160,13 +162,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Parsing the data in non-ui thread
         @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+        protected List<List<HashMap<String, String>>> doInBackground(String... routeAsJson) {
 
             JSONObject jObject;
             List<List<HashMap<String, String>>> routes = null;
 
             try {
-                jObject = new JSONObject(jsonData[0]);
+                jObject = new JSONObject(routeAsJson[0]);
                 DirectionsJSONParser parser = new DirectionsJSONParser();
 
                 routes = parser.parse(jObject);
@@ -188,8 +190,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lineOptions = new PolylineOptions();
 
                 List<HashMap<String, String>> path = result.get(i);
+                HashMap<String, String> colorJson = path.get(0);
+                int color = getColor(colorJson.get("color"));
 
-                for (int j = 0; j < path.size(); j++) {
+                for (int j = 1; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
@@ -201,16 +205,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 lineOptions.addAll(points);
                 lineOptions.width(12);
-                lineOptions.color(Color.BLUE);
+                lineOptions.color(color);
                 lineOptions.geodesic(true);
+
+                // Drawing polyline in the Google Map for the i-th route
+                mMap.addPolyline(lineOptions);
 
             }
 
-            // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
+            // move the camera for zoom out to see the routes
             LatLngBounds bounds = builder.build();
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         }
-    }
 
+        private int getColor(String color) {
+            if (("BLUE").equals(color)) {
+                return Color.BLUE;
+            } else if (("YELLOW").equals(color)) {
+                return Color.YELLOW;
+            } else {
+                return Color.RED;
+            }
+
+        }
+
+    }
 }

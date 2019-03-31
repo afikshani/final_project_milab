@@ -21,7 +21,8 @@ public class helloScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MapsActivity.class);
-                intent.putExtra("destination",destinationText.getText());
+                String destination = destinationText.getText().toString();
+                intent.putExtra("destination", destination);
                 startActivity(intent);
 
             }

@@ -42,7 +42,7 @@
         </activity>
 
         <service
-            android:name=".RouteCalc"
+            android:name=".helpers.RouteCalc"
             android:exported="false" />
 
         <activity android:name=".MapsActivity" />

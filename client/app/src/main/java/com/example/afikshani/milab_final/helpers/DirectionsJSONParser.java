@@ -1,4 +1,6 @@
-package com.example.afikshani.milab_final;
+package com.example.afikshani.milab_final.helpers;
+
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -17,6 +19,7 @@ public class DirectionsJSONParser {
 
         List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String,String>>>() ;
         JSONArray jRoutes = null;
+        JSONArray jColor = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
 
@@ -26,8 +29,18 @@ public class DirectionsJSONParser {
 
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
+                //jColor = ( (JSONObject)jRoutes.get(i)).getJSONArray("color");
                 jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<HashMap<String, String>>();
+                HashMap<String, String> color = new HashMap<String, String>();
+                if (i == 0) {
+                    color.put("color", "BLUE");
+                }else if (i == 1){
+                    color.put("color", "YELLOW");
+                } else{
+                    color.put("color", "RED");
+                }
+                path.add(color);
 
                 /** Traversing all legs */
                 for(int j=0;j<jLegs.length();j++){
@@ -47,8 +60,15 @@ public class DirectionsJSONParser {
                             path.add(hm);
                         }
                     }
+
+                    Log.d("hey", "debugging it");
                     routes.add(path);
+
+
                 }
+
+
+
             }
 
         } catch (JSONException e) {
