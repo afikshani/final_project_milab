@@ -15,24 +15,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 public class RouteCalc extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
+
     private static final String ACTION_VOLLEY = "com.example.afikshani.milab_final.action.ACTION_VOLLEY";
 
-    // TODO: Rename parameters
     private static final String PARAM1_ORIGIN = "com.example.afikshani.milab_final.extra.PARAM1";
-    private static final String PARAM2_DEST = "com.example.afikshani.milab_final.extra.PARAM2";
+    private static final String PARAM2_DESTINATION = "com.example.afikshani.milab_final.extra.PARAM2";
     private static final String RESPONSE_PARAM = "com.example.afikshani.milab_final.extra.RESPONSE";
     public static final String RESPONSE_ANSWER = "com.example.afikshani.milab_final.extra.ANSWER";
-
 
 
     public RouteCalc() {
@@ -45,13 +35,11 @@ public class RouteCalc extends IntentService {
      *
      * @see IntentService
      */
-    public static void initService(Context context, ResultReceiver receiver, String destination) {
+    public static void initService(Context context, String destination) {
         Intent intent = new Intent(context, RouteCalc.class);
         intent.setAction(ACTION_VOLLEY);
-
-        intent.putExtra(PARAM1_ORIGIN,"IDC Herzliya");
-        intent.putExtra(PARAM2_DEST, "Dizengoff Center Mall");
-        intent.putExtra(RESPONSE_PARAM, receiver);
+        intent.putExtra(PARAM1_ORIGIN, "IDC Herzliya");
+        intent.putExtra(PARAM2_DESTINATION, destination);
         context.startService(intent);
     }
 
@@ -59,22 +47,24 @@ public class RouteCalc extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+
             if (ACTION_VOLLEY.equals(action)) {
-                final String origin = intent.getStringExtra(PARAM1_ORIGIN);
-                final String dest = intent.getStringExtra(PARAM2_DEST);
-                final ResultReceiver receiver = intent.getParcelableExtra(RESPONSE_PARAM);
-                handleActionProvideRoute(origin, dest, receiver);
+                String origin = intent.getStringExtra(PARAM1_ORIGIN);
+                String destination = intent.getStringExtra(PARAM2_DESTINATION);
+                handleActionProvideRoute(origin, destination);
+                //final ResultReceiver receiver = intent.getParcelableExtra(RESPONSE_PARAM);
+
             }
+
         }
+
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionProvideRoute(String origin, String destination, final ResultReceiver receiver) {
+
+    private void handleActionProvideRoute(String origin, String destination) {
+
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+destination+"&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs"+"&alternatives="+true;
+        final String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&alternatives=" + true;
 
         StringRequest req = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -82,7 +72,7 @@ public class RouteCalc extends IntentService {
                 Log.d("hello", "Response back from server - " + response);
                 final Bundle bundle = new Bundle();
                 bundle.putString(RESPONSE_ANSWER, response);
-                receiver.send(200, bundle);
+                //receiver.send(200, bundle);
 
             }
         }, new Response.ErrorListener() {
@@ -94,7 +84,6 @@ public class RouteCalc extends IntentService {
 
         queue.add(req);
     }
-
 
 
     /**

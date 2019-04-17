@@ -1,9 +1,8 @@
 package com.example.afikshani.milab_final;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.support.annotation.ColorRes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +32,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    LocationManager locationManager;
     private String currentPolyline;
     private String destination = "Dizengoff Center";
 
@@ -44,9 +44,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle bundle = getIntent().getExtras();
         String userDestination = bundle.getString("destination");
 
-        if (userDestination.isEmpty() == false) {  // if client put a destination address
-            destination = userDestination;
-        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -77,60 +74,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sourceLocation, 16.0f));
 
-        String routeRequest = getDirectionsUrl("IDC Herzliya", destination);
+        String routeRequest = SearchScreen.getDirectionsUrl("IDC Herzliya", destination);
 
         //לייצר מפוע חדש בכל פעם שחורגים מהמסלול עפ"י נתוני לווין
 
-        RouteCalc routeCalc = new RouteCalc();
+        RouteCalculatorAsync routeCalc = new RouteCalculatorAsync();
 
         routeCalc.execute(routeRequest);
     }
 
-    private String getDirectionsUrl(String origin, String destination) {
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" + "&mode=bicycling+" + "&avoid=highways" + "&alternatives=" + true;
-
-        return url;
-    }
-
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(strUrl);
-
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            urlConnection.connect();
-
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            data = sb.toString();
-
-            br.close();
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        } finally {
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-
-    private class RouteCalc extends AsyncTask<String, Void, String> {
+    public class RouteCalculatorAsync extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... url) {
@@ -146,6 +99,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return routeData;
         }
 
+        private String downloadUrl(String strUrl) throws IOException {
+            String data = "";
+            InputStream iStream = null;
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(strUrl);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.connect();
+
+                iStream = urlConnection.getInputStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+                StringBuffer sb = new StringBuffer();
+
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                data = sb.toString();
+
+                br.close();
+
+            } catch (Exception e) {
+                Log.d("Exception", e.toString());
+            } finally {
+                iStream.close();
+                urlConnection.disconnect();
+            }
+            return data;
+        }
+
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -156,78 +144,84 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-    }
 
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+        private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... routeAsJson) {
+            // Parsing the data in non-ui thread
+            @Override
+            protected List<List<HashMap<String, String>>> doInBackground(String... routeAsJson) {
 
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
+                JSONObject jFullObject;
+                JSONObject jObject;
+                List<List<HashMap<String, String>>> routes = null;
 
-            try {
-                jObject = new JSONObject(routeAsJson[0]);
-                DirectionsJSONParser parser = new DirectionsJSONParser();
+                try {
+                    jFullObject = new JSONObject(routeAsJson[0]);
 
-                routes = parser.parse(jObject);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    jObject = jFullObject.getJSONObject("json");
+
+                    DirectionsJSONParser parser = new DirectionsJSONParser();
+
+                    routes = parser.parse(jObject);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return routes;
             }
-            return routes;
-        }
 
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList points = null;
-            PolylineOptions lineOptions = null;
-            MarkerOptions markerOptions = new MarkerOptions();
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            @Override
+            protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+                ArrayList points = null;
+                PolylineOptions lineOptions = null;
+                MarkerOptions markerOptions = new MarkerOptions();
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList();
-                lineOptions = new PolylineOptions();
+                for (int i = 0; i < result.size(); i++) {
+                    points = new ArrayList();
+                    lineOptions = new PolylineOptions();
 
-                List<HashMap<String, String>> path = result.get(i);
-                HashMap<String, String> colorJson = path.get(0);
-                int color = getColor(colorJson.get("color"));
+                    List<HashMap<String, String>> path = result.get(i);
+                    HashMap<String, String> colorJson = path.get(0);
+                    int color = getColor(colorJson.get("color"));
 
-                for (int j = 1; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
+                    for (int j = 1; j < path.size(); j++) {
+                        HashMap<String, String> point = path.get(j);
 
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-                    builder.include(position);
-                    points.add(position);
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+                        builder.include(position);
+                        points.add(position);
+                    }
+
+                    lineOptions.addAll(points);
+                    lineOptions.width(12);
+                    lineOptions.color(color);
+                    lineOptions.geodesic(true);
+
+                    // Drawing polyline in the Google Map for the i-th route
+                    mMap.addPolyline(lineOptions);
+
                 }
 
-                lineOptions.addAll(points);
-                lineOptions.width(12);
-                lineOptions.color(color);
-                lineOptions.geodesic(true);
+                // move the camera for zoom out to see the routes
+                LatLngBounds bounds = builder.build();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            }
 
-                // Drawing polyline in the Google Map for the i-th route
-                mMap.addPolyline(lineOptions);
+            private int getColor(String color) {
+                if (("BLUE").equals(color)) {
+                    return Color.BLUE;
+                } else if (("YELLOW").equals(color)) {
+                    return Color.YELLOW;
+                } else {
+                    return Color.RED;
+                }
 
             }
 
-            // move the camera for zoom out to see the routes
-            LatLngBounds bounds = builder.build();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         }
-
-        private int getColor(String color) {
-            if (("BLUE").equals(color)) {
-                return Color.BLUE;
-            } else if (("YELLOW").equals(color)) {
-                return Color.YELLOW;
-            } else {
-                return Color.RED;
-            }
-
-        }
-
     }
+
+
 }
