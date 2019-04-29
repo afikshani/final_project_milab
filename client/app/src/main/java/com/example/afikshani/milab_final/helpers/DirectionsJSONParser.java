@@ -29,13 +29,14 @@ public class DirectionsJSONParser {
 
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
+                String colorOfRoute = ((JSONObject)jRoutes.get(i)).getString("color");
                 //jColor = ( (JSONObject)jRoutes.get(i)).getJSONArray("color");
                 jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<HashMap<String, String>>();
                 HashMap<String, String> color = new HashMap<String, String>();
-                if (i == 0) {
-                    color.put("color", "BLUE");
-                }else if (i == 1){
+                if (colorOfRoute.equals("0")) {
+                    color.put("color", "GREEN");
+                }else if (colorOfRoute.equals("1")){
                     color.put("color", "YELLOW");
                 } else{
                     color.put("color", "RED");

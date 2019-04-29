@@ -46,7 +46,7 @@ public class ChooseRouteActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_choose_route);
 
 
         originLat = getIntent().getStringExtra("originLat");
@@ -97,7 +97,7 @@ public class ChooseRouteActivity extends FragmentActivity implements OnMapReadyC
 
     private String getDirectionsUrl(String origin, String destination) {
 
-        String url = "https://finalproject-cgwvlrljbd.now.sh/routes/"+origin+"/"+destination;
+        String url = "https://finalproject-shzntgueve.now.sh/routes/"+origin+"/"+destination;
         return url;
     }
 
@@ -228,8 +228,8 @@ public class ChooseRouteActivity extends FragmentActivity implements OnMapReadyC
             }
 
             private int getColor(String color) {
-                if (("BLUE").equals(color)) {
-                    return Color.BLUE;
+                if (("GREEN").equals(color)) {
+                    return Color.GREEN;
                 } else if (("YELLOW").equals(color)) {
                     return Color.YELLOW;
                 } else {

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.afikshani.milab_final">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -21,14 +20,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <service android:name=".helpers.GPSTracker"/>
+        <service android:name=".helpers.GPSTracker" />
+        <service
+            android:name=".helpers.GPS_Service"
+            android:enabled="true" />
 
-        <service android:enabled="true" android:name=".helpers.GPS_Service" />
-
-        <activity
-            android:name=".HamburgerForCheck"
-            android:label="@string/title_activity_searcher"
-            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,8 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".ChooseRouteActivity" />
         <activity
             android:name=".SearchRouteScreen"
