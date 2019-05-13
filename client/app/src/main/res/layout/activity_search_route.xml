@@ -14,56 +14,55 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-    <Button
-        android:id="@+id/button"
-        style="@android:style/Widget.DeviceDefault.Button"
-        android:layout_width="73dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="43dp"
-        android:drawableTop="@drawable/search_buttun_logo"
-        android:src="@drawable/search_icon"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        app:layout_constraintStart_toEndOf="@+id/editDest"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <EditText
         android:id="@+id/editDest"
-        android:layout_width="229dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="318dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="@drawable/rounded_edittext"
-        android:ems="10"
-        android:hint="  Ready for your safe ride?  "
+        android:hint="Ready for your safe ride?"
         android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/mic"
         style="@android:style/Widget.DeviceDefault.Button"
-        android:layout_width="63dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="508dp"
-        android:layout_marginEnd="172dp"
-        android:layout_marginRight="172dp"
-        android:background="@drawable/search_icon"
+        android:layout_width="49dp"
+        android:layout_height="51dp"
+        android:background="@drawable/microphone"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDest" />
+        app:layout_constraintBottom_toBottomOf="@+id/editDest"
+        app:layout_constraintStart_toStartOf="@+id/editDest"
+        app:layout_constraintTop_toTopOf="@+id/editDest" />
+
+    <Button
+        android:id="@+id/searchButton"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="49dp"
+        android:layout_height="51dp"
+        android:background="@drawable/search"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        app:layout_constraintBottom_toBottomOf="@+id/editDest"
+        app:layout_constraintEnd_toEndOf="@+id/editDest"
+        app:layout_constraintTop_toTopOf="@+id/editDest" />
+
 
 
 </android.support.constraint.ConstraintLayout>

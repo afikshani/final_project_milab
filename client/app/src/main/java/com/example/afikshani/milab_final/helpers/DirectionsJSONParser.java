@@ -19,7 +19,6 @@ public class DirectionsJSONParser {
 
         List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String,String>>>() ;
         JSONArray jRoutes = null;
-        JSONArray jColor = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
 
@@ -27,12 +26,12 @@ public class DirectionsJSONParser {
 
             jRoutes = jObject.getJSONArray("routes");
 
+
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
-                String colorOfRoute = ((JSONObject)jRoutes.get(i)).getString("color");
-                //jColor = ( (JSONObject)jRoutes.get(i)).getJSONArray("color");
-                jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<HashMap<String, String>>();
+                // adding color to the path
+                String colorOfRoute = ((JSONObject)jRoutes.get(i)).getString("color");
                 HashMap<String, String> color = new HashMap<String, String>();
                 if (colorOfRoute.equals("0")) {
                     color.put("color", "GREEN");
@@ -42,6 +41,13 @@ public class DirectionsJSONParser {
                     color.put("color", "RED");
                 }
                 path.add(color);
+
+                String rateOfRoute = ((JSONObject)jRoutes.get(i)).getString("rate");
+                HashMap<String, String> rating = new HashMap<String, String>();
+                rating.put("rating",rateOfRoute);
+                path.add(rating);
+
+                jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
 
                 /** Traversing all legs */
                 for(int j=0;j<jLegs.length();j++){

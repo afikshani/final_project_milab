@@ -19,12 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".NavigationActivity"></activity>
 
         <service android:name=".helpers.GPSTracker" />
         <service
             android:name=".helpers.GPS_Service"
             android:enabled="true" />
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,6 +37,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs" />
 
+
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,10 +45,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooseRouteActivity" />
         <activity
             android:name=".SearchRouteScreen"
             android:label="Map" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PopSearchActivity"
+            android:theme="@style/AppTheme.PopSearch" />
+        <activity android:name=".FinishScreen" />
+        <activity
+            android:name=".fragments.FirstOptionFragment"
+            android:theme="@style/AppTheme.PopSearch" />
     </application>
 
 </manifest>

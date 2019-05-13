@@ -1,14 +1,18 @@
 package com.example.afikshani.milab_final;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -17,9 +21,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 
 import com.example.afikshani.milab_final.helpers.GPS_Service;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,6 +54,7 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
     private String locationTitle;
     private String destination;
     private LatLng destinationLatLong;
+    private int numOfRoutes;
 
     Button searchButton;
     ProgressDialog progressDialog;
@@ -86,7 +92,7 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
         mapWithMe.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
     }
 
-
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,9 +104,13 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
 
 
-        searchButton = (Button) findViewById(R.id.button);
+        searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setEnabled(false);
         final EditText destinationText = (EditText) findViewById(R.id.editDest);
+
+
+        Typeface typeface = getResources().getFont(R.font.oxygen);
+        destinationText.setTypeface(typeface);
 
         destinationText.addTextChangedListener(new TextWatcher() {
 
@@ -128,7 +138,7 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
             public void onClick(View v) {
                 destination = destinationText.getText().toString();
                 progressDialog = new ProgressDialog(SearchRouteScreen.this);
-                progressDialog.setMessage("Finding safest route...");
+                progressDialog.setMessage("Validating existing routes...");
                 progressDialog.show();
 
                 String origin = myLocation.latitude+","+myLocation.longitude;
@@ -148,10 +158,6 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
         GPS_Service.initGPSLocator(getApplicationContext());
 
 
-        /*Intent check = new Intent(getApplicationContext(), HamburgerForCheck.class);
-        startActivity(check);
-        finish();
-        */
 
 
     }
@@ -172,12 +178,64 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
 
     }
 
-
     private String getDirectionsUrl(String origin, String destination) {
 
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+destination+"&key=AIzaSyA55Fgqx8yShAamvF7B3llMO3ZrIKBZyAs&mode=bicycling&avoid=highways&alternatives=true";
         return url;
+
+    }
+
+    private void invalidDestinationDialog() {
+        final Dialog dialog = new Dialog(SearchRouteScreen.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+            }
+        }, 3000);
+    }
+
+    private boolean isValidDestination(String routeStrings) throws JSONException {
+
+        boolean isValidDestination;
+
+        JSONObject jObject = new JSONObject(routeStrings);
+
+        JSONArray jRoutes = jObject.getJSONArray("routes");
+
+        if (jRoutes.length() == 0) {
+            isValidDestination = false;
+        } else {
+            isValidDestination = true;
+            numOfRoutes = jRoutes.length();
+            getGoogleAccurateDestAndOrigin(jRoutes);
+
+        }
+
+        return isValidDestination;
+    }
+
+    private void getGoogleAccurateDestAndOrigin(JSONArray routes) throws JSONException {
+
+        JSONObject first = routes.getJSONObject(0);
+        JSONArray legs = first.getJSONArray("legs");
+        JSONObject routeMetaData = legs.getJSONObject(0);
+        String endAddressAsSring = routeMetaData.getString("end_address");
+        JSONObject endAddressAsLatLong = routeMetaData.getJSONObject("end_location");
+        Double destinationLatitude = Double.parseDouble(endAddressAsLatLong.getString("lat"));
+        Double destinationlongtitude = Double.parseDouble(endAddressAsLatLong.getString("lng"));
+        //destination = endAddressAsSring;
+        destinationLatLong = new LatLng(destinationLatitude, destinationlongtitude);
+
+        return;
+
 
     }
 
@@ -248,7 +306,8 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
             progressDialog.hide();
 
             if (isValidDestination) {
-                Intent intent = new Intent(SearchRouteScreen.this, ChooseRouteActivity.class);
+                Intent intent = new Intent(SearchRouteScreen.this, MainActivity.class);
+                intent.putExtra("numOfRoutes", String.valueOf(numOfRoutes));
                 intent.putExtra("originLat", String.valueOf(myLocation.latitude));
                 intent.putExtra("originLong", String.valueOf(myLocation.longitude));
                 intent.putExtra("destinationLat", String.valueOf(destinationLatLong.latitude));
@@ -257,48 +316,11 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
                 startActivity(intent);
 
             } else {
-                Toast.makeText(SearchRouteScreen.this, "Please enter a valid destination", Toast.LENGTH_LONG).show();
+                invalidDestinationDialog();
             }
 
 
         }
-
-
-    }
-
-
-    private boolean isValidDestination(String routeStrings) throws JSONException {
-
-        boolean isValidDestination;
-
-        JSONObject jObject = new JSONObject(routeStrings);
-
-        JSONArray jRoutes = jObject.getJSONArray("routes");
-
-        if (jRoutes.length() == 0) {
-            isValidDestination = false;
-        } else {
-            isValidDestination = true;
-            getGoogleAccurateDestAndOrigin(jRoutes);
-
-        }
-
-        return isValidDestination;
-    }
-
-    private void getGoogleAccurateDestAndOrigin(JSONArray routes) throws JSONException {
-
-        JSONObject first = routes.getJSONObject(0);
-        JSONArray legs = first.getJSONArray("legs");
-        JSONObject routeMetaData = legs.getJSONObject(0);
-        String endAddressAsSring = routeMetaData.getString("end_address");
-        JSONObject endAddressAsLatLong = routeMetaData.getJSONObject("end_location");
-        Double destinationLatitude = Double.parseDouble(endAddressAsLatLong.getString("lat"));
-        Double destinationlongtitude = Double.parseDouble(endAddressAsLatLong.getString("lng"));
-        destination = endAddressAsSring;
-        destinationLatLong = new LatLng(destinationLatitude, destinationlongtitude);
-
-        return;
 
 
     }

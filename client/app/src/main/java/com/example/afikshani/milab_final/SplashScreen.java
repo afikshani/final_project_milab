@@ -10,12 +10,13 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        //old backgorund colod in colorPrimary #e8f5e9
 
         Thread splashThread = new Thread(){
             @Override
             public void run() {
                 try {
-                    sleep(4500);
+                    sleep(6000);
                     Intent startAppIntent = new Intent(getApplicationContext(), SearchRouteScreen.class);
                     startActivity(startAppIntent);
                     finish();
