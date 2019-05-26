@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -51,7 +53,6 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
 
     private GoogleMap mapWithMe;
     private LatLng myLocation;
-    private String locationTitle;
     private String destination;
     private LatLng destinationLatLong;
     private int numOfRoutes;
@@ -74,7 +75,6 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
                     double longitude = Double.parseDouble(sLongitude );
                     double latitude = Double.parseDouble(sLatitude);
                     myLocation = new LatLng(latitude, longitude);
-                    locationTitle = intent.getExtras().get("nameOfPlace").toString();
 
                     updateMap(myLocation, "You Are Here");
 
@@ -87,10 +87,6 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
 
     }
 
-    private void updateMap(LatLng location, String titleOfPlacee ) {
-        mapWithMe.addMarker(new MarkerOptions().position(location).title(titleOfPlacee));
-        mapWithMe.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
-    }
 
     @SuppressLint("NewApi")
     @Override
@@ -152,11 +148,12 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
             }
         });
 
+
+
+        /* Actual use in GPS can be done using this ->
         runtime_permissions();
-
-        //Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
         GPS_Service.initGPSLocator(getApplicationContext());
-
+        */
 
 
 
@@ -170,11 +167,22 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
         return false;
     }
 
+    private void updateMap(LatLng location, String titleOfPlacee ) {
+        mapWithMe.addMarker(new MarkerOptions().position(location).title(titleOfPlacee));
+        mapWithMe.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
+    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mapWithMe = googleMap;
         mapWithMe.getUiSettings().setZoomControlsEnabled(true);
+
+
+        //Should be replaced by service
+        myLocation = new LatLng(32.1766554, 34.8361899);
+        updateMap(myLocation, "You Are Here");
 
     }
 
@@ -189,6 +197,7 @@ public class SearchRouteScreen extends FragmentActivity implements OnMapReadyCal
     private void invalidDestinationDialog() {
         final Dialog dialog = new Dialog(SearchRouteScreen.this);
         dialog.setContentView(R.layout.custom_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
         dialog.show();

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -19,11 +18,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -78,10 +74,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private PopupWindow mPopupWindow;
 
+    public static List<HashMap<String, String>> safestRoute;
+    public static List<HashMap<String, String>> additionalRoute;
+    public static List<HashMap<String, String>> dangerousRoute;
+    public static List<HashMap<String, String>> choosedRoute;
+
     private static int COLOR_GREEN = Color.parseColor("#1de9b6");
-    private static int COLOR_YELLOW = Color.parseColor("#ffee58");
+    private static int COLOR_YELLOW = Color.parseColor("#fbc02d");
     private static int COLOR_RED = Color.parseColor("#f44336");
     private static int COLOR_WHITE = Color.parseColor("#fafafa");
+    private static int choosedColor = COLOR_GREEN;
 
 
     @Override
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
+
+        Log.d("afikTests", "now started main activity");
 
         searchingDialog = new Intent(getApplicationContext(), PopSearchActivity.class);
         startActivityForResult(searchingDialog, INTENT_SIGNAL);
@@ -115,6 +119,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+        routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
+    }
+
     private void setToolBarButtons() {
 
         mapContextButton = (Button) findViewById(R.id.toolbar_map_context);
@@ -123,21 +135,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapContextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_gray));
-                routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_white));
-                if (mPopupWindow != null) {
+                mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+                routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
+                /*if (mPopupWindow != null) {
                     mPopupWindow.dismiss();
                     mPopupWindow = null;
                 }
+                */
             }
         });
 
         routeInfoContextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
-                routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+                mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_white));
+                routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_gray));
 
+                /*
                 if (mPopupWindow == null) {
                     LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
                     View customView = inflater.inflate(R.layout.custom_layout_route_info, null);
@@ -152,12 +166,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onClick(View view) {
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
-                            mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_gray));
-                            routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_white));
+                            mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+                            routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
                         }
                     });
                     mPopupWindow.showAtLocation(coordinatorLayout, Gravity.CENTER, 0, 0);
                 }
+                */
+                Intent routeInfoIntent = new Intent(getApplicationContext(), RouteInfoBanner.class);
+                routeInfoIntent.putExtra("color", String.valueOf(choosedColor));
+                startActivity(routeInfoIntent);
 
             }
 
@@ -186,6 +204,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         String routeRequest = getDirectionsUrl(origin, destination);
 
+        Log.d("afikTests", "now started staring async Task");
+
+
         RouteCalculatorAsync routeCalc = new RouteCalculatorAsync();
 
         routeCalc.execute(routeRequest);
@@ -193,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private String getDirectionsUrl(String origin, String destination) {
 
-        String url = "https://finalproject-aumqcixymm.now.sh/routes/" + origin + "/" + destination;
+        String url = "https://finalproject-atzmftumgr.now.sh/routes/" + origin + "/" + destination;
         return url;
     }
 
@@ -205,6 +226,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String routeData = "";
 
             try {
+
+
                 routeData = downloadUrl(url[0]);
 
             } catch (Exception e) {
@@ -214,6 +237,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         private String downloadUrl(String strUrl) throws IOException {
+
+            Log.d("afikTests", "entered to download url");
+
             String data = "";
             InputStream iStream = null;
             HttpURLConnection urlConnection = null;
@@ -288,17 +314,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 int numOfRoutes = result.size();
 
-                // Create the adapter that will return a fragment for each of the three
-                // primary sections of the activity.
-                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numOfRoutes);
-
-                // Set up the ViewPager with the sections adapter.
-                mViewPager = (ViewPager) findViewById(R.id.container);
-                mViewPager.setAdapter(mSectionsPagerAdapter);
-
-                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
                 ArrayList points = null;
                 PolylineOptions lineOptions = null;
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -308,14 +323,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     points = new ArrayList();
                     lineOptions = new PolylineOptions();
 
+                    saveRoutesToNavigation(i, result.get(i));
+
                     List<HashMap<String, String>> path = result.get(i);
                     HashMap<String, String> colorJson = path.get(0);
                     int color = getColor(colorJson.get("color"));
                     HashMap<String, String> ratingJson = path.get(1);
                     String rating = ratingJson.get("rating");
                     double ratingAsDouble = Double.valueOf(rating);
-                    int ratingAsInt = (int) ratingAsDouble;
-                    tabLayout.addTab(tabLayout.newTab().setText(ratingAsInt + ""));
+                    tabLayout.addTab(tabLayout.newTab().setText(ratingAsDouble + ""));
 
 
                     for (int j = 2; j < path.size(); j++) {
@@ -340,6 +356,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 updateTabsColors();
 
+                // Create the adapter that will return a fragment for each of the three
+                // primary sections of the activity.
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numOfRoutes);
+
+                // Set up the ViewPager with the sections adapter.
+                mViewPager = (ViewPager) findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
 
                 Thread waitingThread = new Thread() {
                     @Override
@@ -357,9 +384,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // move the camera for zoom out to see the routes
                 LatLngBounds bounds = builder.build();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 400));
 
 
+            }
+
+            private void saveRoutesToNavigation(int index, List<HashMap<String, String>> path) {
+                if (index == 0) {
+                    safestRoute = path;
+                }
+                if (index == 1) {
+                    additionalRoute = path;
+                }
+                if (index == 2) {
+                    dangerousRoute = path;
+                }
             }
 
             private void updateTabsColors() {
@@ -367,11 +406,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 tab.setBackgroundColor(COLOR_GREEN);
                 setTextColor(tab, COLOR_WHITE);
                 LinearLayout tabTwo = (LinearLayout) tabsContainer.getChildAt(1);
-                if (tabTwo != null){
+                if (tabTwo != null) {
                     setTextColor(tabTwo, COLOR_YELLOW);
                 }
                 LinearLayout tabThree = (LinearLayout) tabsContainer.getChildAt(2);
-                if (tabThree != null){
+                if (tabThree != null) {
                     setTextColor(tabThree, COLOR_RED);
                 }
 
@@ -379,16 +418,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
                         if (tab.getPosition() == 0) {
+                            choosedRoute = safestRoute;
+                            choosedColor = COLOR_GREEN;
                             LinearLayout firstTab = (LinearLayout) tabsContainer.getChildAt(0);
                             firstTab.setBackgroundColor(COLOR_GREEN);
                             setTextColor(firstTab, COLOR_WHITE);
                             resetOtherTabs(0);
                         } else if (tab.getPosition() == 1) {
+                            choosedRoute = additionalRoute;
+                            choosedColor = COLOR_YELLOW;
                             LinearLayout middleTab = (LinearLayout) tabsContainer.getChildAt(1);
                             middleTab.setBackgroundColor(COLOR_YELLOW);
                             setTextColor(middleTab, COLOR_WHITE);
                             resetOtherTabs(1);
                         } else {
+                            choosedRoute = dangerousRoute;
+                            choosedColor = COLOR_RED;
                             LinearLayout lastTab = (LinearLayout) tabsContainer.getChildAt(2);
                             lastTab.setBackgroundColor(COLOR_RED);
                             setTextColor(lastTab, COLOR_WHITE);
@@ -460,7 +505,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 tv.setTextColor(color);
             }
 
-
             private int getColor(String color) {
                 if (("GREEN").equals(color)) {
                     return COLOR_GREEN;
@@ -490,10 +534,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (position) {
                 case 0:
                     return new FirstOptionFragment();
+
                 case 1:
                     return new SecondOptionFragment();
+
                 case 2:
                     return new ThirdOptionFragment();
+
                 default:
                     return null;
             }

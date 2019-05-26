@@ -47,6 +47,11 @@ public class DirectionsJSONParser {
                 rating.put("rating",rateOfRoute);
                 path.add(rating);
 
+                JSONArray warnings = ((JSONArray)jRoutes.get(i));
+                HashMap<String, String> warning = new HashMap<String, String>();
+                warning.put("warning",rateOfRoute);
+                path.add(warning);
+
                 jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
 
                 /** Traversing all legs */

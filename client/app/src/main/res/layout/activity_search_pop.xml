@@ -13,9 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:gravity="center_horizontal|center_vertical"
-        android:lines="4"
+        android:lines="3"
         android:lineSpacingExtra="10dp"
         android:text=""
+        android:textSize="16sp"
         android:fontFamily="@font/oxygen_bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toTopOf="@+id/gifImageView"
@@ -24,7 +25,7 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
-        android:layout_width="350dp"
+        android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"

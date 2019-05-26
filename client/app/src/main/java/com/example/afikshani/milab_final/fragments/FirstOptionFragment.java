@@ -23,7 +23,7 @@ public class FirstOptionFragment extends Fragment {
 
         TextView txtToShow = (TextView) rootView.findViewById(R.id.txtTitle2);
 
-        String text = "<font color=#1de9b6>SAFEST</font> <font color=#212121> route for you based on community accident data</font>";
+        String text = "<font color=#1de9b6>SAFEST</font><font color=#999999> route for you based on</font><font color=#999999> community accident data</font>";
         txtToShow.setText(Html.fromHtml(text));
 
 

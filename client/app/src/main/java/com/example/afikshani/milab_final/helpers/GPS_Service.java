@@ -1,7 +1,6 @@
 package com.example.afikshani.milab_final.helpers;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
@@ -11,12 +10,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
+
+import static android.location.LocationManager.*;
 
 
 public class GPS_Service extends IntentService {
@@ -61,7 +63,7 @@ public class GPS_Service extends IntentService {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         // getting GPS status
-        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isGPSEnabled = locationManager.isProviderEnabled(GPS_PROVIDER);
 
         if (!isGPSEnabled) {
             Log.d("service problem", "not able to reach the GPS provider");
@@ -80,43 +82,75 @@ public class GPS_Service extends IntentService {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                updateGPSdata();
-                sendBackLocation();
+
+
+                location = locationManager.getLastKnownLocation(GPS_PROVIDER);
+
+                if (location == null) {   //GET HERE if GPS_PROVIDER didn't provide location
+
+                    List<String> providers = locationManager.getProviders(true);
+                    Location bestLocation = null;
+                    for (String provider : providers) {
+                        Location l = locationManager.getLastKnownLocation(provider);
+                        if (l == null) {
+                            continue;
+                        }
+                        if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                            // Found best last known location: %s", l);
+                            bestLocation = l;
+                        }
+                    }
+
+                    sendBackLocation(bestLocation);
+
+                    /*
+
+                    locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
+
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            updateGPSdata(location);
+                            sendBackLocation(location);
+
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    }, GPS_Service.this.getMainLooper());
+
+                    */
+
+                } else {  //get here if got it from GPS_PROVIDER
+
+                    sendBackLocation(location);
+                }
+
+
             }
         }
 
 
-
-
-        }
-
-    private void updateGPSdata() {
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-
-        //get the location name from latitude and longitude
-        Geocoder geocoder = new Geocoder(getApplicationContext());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            locationTitle = addresses.get(0).getFeatureName() + ", ";
-            locationTitle += addresses.get(0).getLocality() + ", ";
-            locationTitle += addresses.get(0).getLocale();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
-    private void sendBackLocation() {
+
+    private void sendBackLocation(Location location) {
 
         Intent i = new Intent("location_update");
 
         i.putExtra("Longitude", location.getLongitude());
         i.putExtra("Latitude", location.getLatitude());
-        i.putExtra("nameOfPlace", locationTitle);
-        //sendBroadcast(i);
         LocalBroadcastManager.getInstance(GPS_Service.this).sendBroadcast(i);
 
 

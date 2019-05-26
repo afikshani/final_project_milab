@@ -17,7 +17,7 @@ public class PopSearchActivity extends AppCompatActivity {
 
         TextView txtToShow = (TextView) findViewById(R.id.txtTitle);
 
-        String text = "<font color=#212121> We're finding the </font> <font color=#1de9b6>SAFEST</font><font color=#212121> route considering past 2,302 accidents in your area.</font>";
+        String text = "<p><font color=#999999> We're finding the </font> <font color=#1de9b6>SAFEST</font><font color=#999999> route considering</font></p> <p><font color=#999999>past 2,302 accidents in your area.</font></p></h2>";
         txtToShow.setText(Html.fromHtml(text));
 
         DisplayMetrics dm = new DisplayMetrics();
