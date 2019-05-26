@@ -18,48 +18,11 @@
     <list default="true" id="b1afc224-f911-4098-a831-971aac5ef525" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/FinishScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/FinishScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/PopSearchActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/PopSearchActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/RouteInfoBanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/RouteInfoBanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/SearchRouteScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/SearchRouteScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/SplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/SplashScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/FirstOptionFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/FirstOptionFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/SecondOptionFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/SecondOptionFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/ThirdOptionFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/ThirdOptionFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/DirectionsJSONParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/DirectionsJSONParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/GPS_Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/GPS_Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/microphone_old.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/profile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_lets_go_yellow.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_lets_go_yellow.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/search_old.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/setting.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_finish_screen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_finish_screen.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_pop.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_pop.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_route.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_route.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_dialog.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_dialog.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_layout_route_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_layout_route_info.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/first_fragment_option.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/first_fragment_option.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/route_info_banner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/route_info_banner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/second_fragment_option.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/second_fragment_option.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/third_fragment_option.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/third_fragment_option.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -175,17 +138,17 @@
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.5" value="5" />
-          <entry key="project.open.time.6" value="13" />
+          <entry key="project.open.time.6" value="14" />
           <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.8" value="4" />
-          <entry key="project.opened" value="39" />
+          <entry key="project.opened" value="40" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="28" />
           <entry key="gradle" value="23" />
-          <entry key="java" value="363" />
+          <entry key="java" value="364" />
           <entry key="png" value="35" />
           <entry key="svg" value="2" />
           <entry key="ttf" value="10" />
@@ -198,7 +161,7 @@
           <entry key="Font" value="10" />
           <entry key="Groovy" value="23" />
           <entry key="Image" value="35" />
-          <entry key="JAVA" value="363" />
+          <entry key="JAVA" value="364" />
           <entry key="SVG" value="2" />
           <entry key="XML" value="412" />
         </counts>
@@ -207,7 +170,7 @@
         <counts>
           <entry key="dummy" value="77" />
           <entry key="gradle" value="120" />
-          <entry key="java" value="11879" />
+          <entry key="java" value="11887" />
           <entry key="txt" value="24" />
           <entry key="xml" value="3597" />
         </counts>
@@ -215,7 +178,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="120" />
-          <entry key="JAVA" value="11879" />
+          <entry key="JAVA" value="11887" />
           <entry key="PLAIN_TEXT" value="101" />
           <entry key="XML" value="3597" />
         </counts>
@@ -249,8 +212,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="302" column="69" selection-start-line="302" selection-start-column="69" selection-end-line="302" selection-end-column="69" />
+            <state relative-caret-position="47">
+              <caret line="304" column="37" lean-forward="true" selection-start-line="304" selection-start-column="37" selection-end-line="304" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="class#5825:8325" />
@@ -263,81 +226,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/PopSearchActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/RouteInfoBanner.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="56" selection-start-line="56" selection-end-line="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/FirstOptionFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="26" column="47" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/SecondOptionFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/second_fragment_option.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="24" selection-start-line="24" selection-end-line="24" selection-end-column="31" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/third_fragment_option.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/ThirdOptionFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="23" column="159" selection-start-line="23" selection-start-column="159" selection-end-line="23" selection-end-column="159" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/DirectionsJSONParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
-              <folding>
-                <element signature="e#1121#1137#0" expanded="true" />
-                <element signature="e#1593#1609#0" expanded="true" />
-                <element signature="e#1836#1852#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="285">
+              <caret line="54" column="18" selection-start-line="54" selection-start-column="18" selection-end-line="54" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -2719,7 +2612,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2738,15 +2630,12 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="milab_final" type="cbb59c9e:AndroidPsiDirectoryNode" />
             </path>
-            <path>
-              <item name="client" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -2793,7 +2682,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2936,8 +2824,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="821" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1440" height="822" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27825466" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -2955,11 +2842,11 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32871014" />
-      <window_info anchor="bottom" id="Logcat" order="7" sideWeight="0.8576538" weight="0.28532237" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="7" sideWeight="0.8576538" visible="true" weight="0.2849315" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3269494" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.47639486" side_tool="true" weight="0.41563785" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Build" order="11" sideWeight="0.7804006" visible="true" weight="0.2674897" />
+      <window_info anchor="bottom" id="Build" order="11" sideWeight="0.7804006" weight="0.2674897" />
       <window_info anchor="bottom" id="Android Profiler" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -3067,7 +2954,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/DirectionsJSONParser.java</url>
-          <line>50</line>
+          <line>51</line>
           <properties />
           <option name="timeStamp" value="249" />
         </line-breakpoint>
@@ -3355,13 +3242,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="87" column="5" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
-          <folding>
-            <element signature="method#onResume#0;class#SearchRouteScreen#0" />
-            <element signature="method#runtime_permissions#0;class#SearchRouteScreen#0" />
-            <element signature="method#updateMap#0;class#SearchRouteScreen#0" />
-            <element signature="method#onMapReady#0;class#SearchRouteScreen#0" />
-            <element signature="method#getDirectionsUrl#0;class#SearchRouteScreen#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3373,51 +3253,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/ThirdOptionFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="23" column="159" selection-start-line="23" selection-start-column="159" selection-end-line="23" selection-end-column="159" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/second_fragment_option.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="24" selection-start-line="24" selection-end-line="24" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/third_fragment_option.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/SecondOptionFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/FirstOptionFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="26" column="47" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-26/android/os/AsyncTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
           <caret line="248" selection-start-line="248" selection-end-line="248" />
-          <folding>
-            <element signature="e#11179#11416#0" expanded="true" />
-            <element signature="e#11415#11416#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3436,6 +3275,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/ThirdOptionFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="23" column="159" selection-start-line="23" selection-start-column="159" selection-end-line="23" selection-end-column="159" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/SecondOptionFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/fragments/FirstOptionFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="26" column="47" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/second_fragment_option.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="24" selection-start-line="24" selection-end-line="24" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/RouteInfoBanner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
@@ -3443,17 +3311,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/third_fragment_option.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/PopSearchActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="50">
           <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="302" column="69" selection-start-line="302" selection-start-column="69" selection-end-line="302" selection-end-column="69" />
+        <state relative-caret-position="47">
+          <caret line="304" column="37" lean-forward="true" selection-start-line="304" selection-start-column="37" selection-end-line="304" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="class#5825:8325" />
@@ -3467,13 +3343,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/afikshani/milab_final/helpers/DirectionsJSONParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
-          <folding>
-            <element signature="e#1121#1137#0" expanded="true" />
-            <element signature="e#1593#1609#0" expanded="true" />
-            <element signature="e#1836#1852#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="285">
+          <caret line="54" column="18" selection-start-line="54" selection-start-column="18" selection-end-line="54" selection-end-column="18" />
         </state>
       </provider>
     </entry>
