@@ -14,10 +14,12 @@ import java.util.List;
 
 public class DirectionsJSONParser {
 
-    /** Receives a JSONObject and returns a list of lists containing latitude and longitude */
-    public List<List<HashMap<String,String>>> parse(JSONObject jObject){
+    /**
+     * Receives a JSONObject and returns a list of lists containing latitude and longitude
+     */
+    public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
 
-        List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String,String>>>() ;
+        List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String, String>>>();
         JSONArray jRoutes = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
@@ -28,49 +30,65 @@ public class DirectionsJSONParser {
 
 
             /** Traversing all routes */
-            for(int i=0;i<jRoutes.length();i++){
+            for (int i = 0; i < jRoutes.length(); i++) {
                 List path = new ArrayList<HashMap<String, String>>();
                 // adding color to the path
-                String colorOfRoute = ((JSONObject)jRoutes.get(i)).getString("color");
+                String colorOfRoute = ((JSONObject) jRoutes.get(i)).getString("color");
                 HashMap<String, String> color = new HashMap<String, String>();
                 if (colorOfRoute.equals("0")) {
                     color.put("color", "GREEN");
-                }else if (colorOfRoute.equals("1")){
+                } else if (colorOfRoute.equals("1")) {
                     color.put("color", "YELLOW");
-                } else{
+                } else {
                     color.put("color", "RED");
                 }
                 path.add(color);
 
-                String rateOfRoute = ((JSONObject)jRoutes.get(i)).getString("rate");
                 HashMap<String, String> rating = new HashMap<String, String>();
-                rating.put("rating",rateOfRoute);
+                String rateOfRoute = ((JSONObject) jRoutes.get(i)).getString("rate");
+                rating.put("rating", rateOfRoute);
                 path.add(rating);
 
-                /*
-                JSONArray warnings = ((JSONArray)jRoutes.get(i));
-                HashMap<String, String> warning = new HashMap<String, String>();
-                warning.put("warning",rateOfRoute);
-                path.add(warning);
-                */
 
-                jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
+                JSONArray warningsArray = ((JSONArray) ((JSONObject) jRoutes.get(i)).get("topThree"));
+
+                HashMap<String, String> firstWarning = new HashMap<String, String>();
+                HashMap<String, String> secondWarning = new HashMap<String, String>();
+                HashMap<String, String> thirdWarning = new HashMap<String, String>();
+
+                for (int j = 0; j < warningsArray.length(); j++) {
+                    JSONObject currentWarning = (JSONObject) warningsArray.get(j);
+                    String address = currentWarning.get("address") +" - ";
+                    String details = (String) currentWarning.get("warning");
+                    String fullWarning = address + details;
+                    if(j==0) firstWarning.put("warning", fullWarning);
+                    if(j==1) secondWarning.put("warning", fullWarning);
+                    if(j==2) thirdWarning.put("warning", fullWarning);
+
+                }
+
+                path.add(firstWarning);
+                path.add(secondWarning);
+                path.add(thirdWarning);
+
+
+                jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
 
                 /** Traversing all legs */
-                for(int j=0;j<jLegs.length();j++){
-                    jSteps = ( (JSONObject)jLegs.get(j)).getJSONArray("steps");
+                for (int j = 0; j < jLegs.length(); j++) {
+                    jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
 
                     /** Traversing all steps */
-                    for(int k=0;k<jSteps.length();k++){
+                    for (int k = 0; k < jSteps.length(); k++) {
                         String polyline = "";
-                        polyline = (String)((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                        polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List list = decodePoly(polyline);
 
                         /** Traversing all points */
-                        for(int l=0;l <list.size();l++){
+                        for (int l = 0; l < list.size(); l++) {
                             HashMap<String, String> hm = new HashMap<String, String>();
-                            hm.put("lat", Double.toString(((LatLng)list.get(l)).latitude) );
-                            hm.put("lng", Double.toString(((LatLng)list.get(l)).longitude) );
+                            hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));
+                            hm.put("lng", Double.toString(((LatLng) list.get(l)).longitude));
                             path.add(hm);
                         }
                     }
@@ -82,20 +100,35 @@ public class DirectionsJSONParser {
                 }
 
 
-
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
         return routes;
     }
 
+    private String saveWarnings(JSONArray warningsArray) {
+        Warnings warnings = new Warnings();
+        try {
+            for (int i = 0; i < warningsArray.length(); i++) {
+                JSONArray warning = (JSONArray) warningsArray.get(i);
+                String warningLocation = warning.getJSONArray(0).getString(0);
+                String warningDetails = warning.getString(1);
+                WarningDetails newWarning = new WarningDetails(warningLocation,warningDetails);
+                warnings.addWarning(newWarning);
+            }
+        } catch (Exception e) {
+        }finally {
+            return warnings.toString();
+        }
+    }
+
     /**
      * Method to decode polyline points
-     * */
+     */
 
     private List decodePoly(String encoded) {
 

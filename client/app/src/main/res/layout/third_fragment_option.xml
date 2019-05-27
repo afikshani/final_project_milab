@@ -35,7 +35,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_lets_go_red"
         android:text="LET'S GO"
         android:textColor="#fafafa"

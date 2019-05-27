@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ import com.example.afikshani.milab_final.fragments.FirstOptionFragment;
 import com.example.afikshani.milab_final.fragments.SecondOptionFragment;
 import com.example.afikshani.milab_final.fragments.ThirdOptionFragment;
 import com.example.afikshani.milab_final.helpers.DirectionsJSONParser;
+import com.example.afikshani.milab_final.helpers.Warnings;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -54,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private CoordinatorLayout coordinatorLayout;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private FragmentTransaction transactionManager;
+    private Bundle bundleToNavigation;
+    private Fragment firstFragment;
+    private Fragment secondFragment;
+    private Fragment thirdFragment;
 
     private GoogleMap mMap;
     private TabLayout tabLayout;
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button routeInfoContextButton;
     private Button mapContextButton;
 
+    private String url;
     private String destination;
     private String destinationLat;
     private String destinationLong;
@@ -72,17 +80,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Intent searchingDialog;
     private int INTENT_SIGNAL = 555;
 
-    private PopupWindow mPopupWindow;
 
-    public static List<HashMap<String, String>> safestRoute;
-    public static List<HashMap<String, String>> additionalRoute;
-    public static List<HashMap<String, String>> dangerousRoute;
-    public static List<HashMap<String, String>> choosedRoute;
+    public static int COLOR_GREEN = Color.parseColor("#1de9b6");
+    public static int COLOR_YELLOW = Color.parseColor("#fbc02d");
+    public static int COLOR_RED = Color.parseColor("#f44336");
+    public static int COLOR_WHITE = Color.parseColor("#fafafa");
+    public static int COLOR_GRAY = Color.parseColor("#9e9e9e");
 
-    private static int COLOR_GREEN = Color.parseColor("#1de9b6");
-    private static int COLOR_YELLOW = Color.parseColor("#fbc02d");
-    private static int COLOR_RED = Color.parseColor("#f44336");
-    private static int COLOR_WHITE = Color.parseColor("#fafafa");
+
+    private String firstWarning;
+    private String secondWarning;
+    private String thirdWarning;
+
     private static int choosedColor = COLOR_GREEN;
 
 
@@ -99,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Log.d("afikTests", "now started main activity");
 
-        searchingDialog = new Intent(getApplicationContext(), PopSearchActivity.class);
-        startActivityForResult(searchingDialog, INTENT_SIGNAL);
 
         originLat = getIntent().getStringExtra("originLat");
         originLong = getIntent().getStringExtra("originLong");
@@ -108,6 +115,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         destination = getIntent().getStringExtra("destination");
         destinationLat = getIntent().getStringExtra("destinationLat");
         destinationLong = getIntent().getStringExtra("destinationLong");
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        transactionManager = fragmentManager.beginTransaction();
+        bundleToNavigation = new Bundle();
+        bundleToNavigation.putString("originLat", originLat);
+        bundleToNavigation.putString("originLong", originLong);
+        bundleToNavigation.putString("destinationLat", destinationLat);
+        bundleToNavigation.putString("destinationLong", destinationLong);
+
+        searchingDialog = new Intent(getApplicationContext(), PopSearchActivity.class);
+        startActivityForResult(searchingDialog, INTENT_SIGNAL);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -124,7 +142,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onResume();
 
         mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+        mapContextButton.setTextColor(COLOR_WHITE);
         routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
+        routeInfoContextButton.setTextColor(COLOR_GRAY);
     }
 
     private void setToolBarButtons() {
@@ -136,12 +156,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
+                mapContextButton.setTextColor(COLOR_WHITE);
                 routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
-                /*if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                    mPopupWindow = null;
-                }
-                */
+                routeInfoContextButton.setTextColor(COLOR_GRAY);
             }
         });
 
@@ -149,32 +166,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_white));
+                mapContextButton.setTextColor(COLOR_GRAY);
                 routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_gray));
+                routeInfoContextButton.setTextColor(COLOR_WHITE);
 
-                /*
-                if (mPopupWindow == null) {
-                    LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View customView = inflater.inflate(R.layout.custom_layout_route_info, null);
-                    setAlertsRouteInformation(customView);
-                    mPopupWindow = new PopupWindow(customView, ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        mPopupWindow.setElevation(5.0f);
-                    }
-                    ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
-                    closeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mPopupWindow.dismiss();
-                            mPopupWindow = null;
-                            mapContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_left_gray));
-                            routeInfoContextButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_toolbar_items_right_white));
-                        }
-                    });
-                    mPopupWindow.showAtLocation(coordinatorLayout, Gravity.CENTER, 0, 0);
-                }
-                */
                 Intent routeInfoIntent = new Intent(getApplicationContext(), RouteInfoBanner.class);
                 routeInfoIntent.putExtra("color", String.valueOf(choosedColor));
+                routeInfoIntent.putExtra("warning1", firstWarning);
+                routeInfoIntent.putExtra("warning2", secondWarning);
+                routeInfoIntent.putExtra("warning3", thirdWarning);
                 startActivity(routeInfoIntent);
 
             }
@@ -214,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private String getDirectionsUrl(String origin, String destination) {
 
-        String url = "https://finalproject-atzmftumgr.now.sh/routes/" + origin + "/" + destination;
+        url = "https://finalproject-hbnkontuaj.now.sh/routes/" + origin + "/" + destination;
+        bundleToNavigation.putString("url", url);
         return url;
     }
 
@@ -323,18 +324,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     points = new ArrayList();
                     lineOptions = new PolylineOptions();
 
-                    saveRoutesToNavigation(i, result.get(i));
-
                     List<HashMap<String, String>> path = result.get(i);
+
                     HashMap<String, String> colorJson = path.get(0);
                     int color = getColor(colorJson.get("color"));
+
                     HashMap<String, String> ratingJson = path.get(1);
                     String rating = ratingJson.get("rating");
                     double ratingAsDouble = Double.valueOf(rating);
                     tabLayout.addTab(tabLayout.newTab().setText(ratingAsDouble + ""));
 
+                    HashMap<String, String> first = path.get(2);
+                    firstWarning = first.get("warning");
 
-                    for (int j = 2; j < path.size(); j++) {
+                    HashMap<String, String> second = path.get(3);
+                    secondWarning = second.get("warning");
+
+                    HashMap<String, String> third = path.get(4);
+                    thirdWarning = third.get("warning");
+
+                    for (int j = 5; j < path.size(); j++) {
                         HashMap<String, String> point = path.get(j);
 
                         double lat = Double.parseDouble(point.get("lat"));
@@ -354,7 +363,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
 
+                bundleToNavigation.putString("color", COLOR_GREEN+"");
+
+
+
                 updateTabsColors();
+
 
                 // Create the adapter that will return a fragment for each of the three
                 // primary sections of the activity.
@@ -372,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void run() {
                         try {
-                            sleep(3000);
+                            sleep(2000);
                             finishActivity(INTENT_SIGNAL);
 
                         } catch (InterruptedException e) {
@@ -389,17 +403,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
 
-            private void saveRoutesToNavigation(int index, List<HashMap<String, String>> path) {
-                if (index == 0) {
-                    safestRoute = path;
-                }
-                if (index == 1) {
-                    additionalRoute = path;
-                }
-                if (index == 2) {
-                    dangerousRoute = path;
-                }
-            }
 
             private void updateTabsColors() {
                 LinearLayout tab = (LinearLayout) tabsContainer.getChildAt(0);
@@ -418,22 +421,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
                         if (tab.getPosition() == 0) {
-                            choosedRoute = safestRoute;
                             choosedColor = COLOR_GREEN;
+                            bundleToNavigation.putString("color", COLOR_GREEN+"");
+                            firstFragment.setArguments(bundleToNavigation);
                             LinearLayout firstTab = (LinearLayout) tabsContainer.getChildAt(0);
                             firstTab.setBackgroundColor(COLOR_GREEN);
                             setTextColor(firstTab, COLOR_WHITE);
                             resetOtherTabs(0);
                         } else if (tab.getPosition() == 1) {
-                            choosedRoute = additionalRoute;
                             choosedColor = COLOR_YELLOW;
+                            bundleToNavigation.putString("color", COLOR_YELLOW+"");
+                            bundleToNavigation.putString("url", url);
+                            secondFragment.setArguments(bundleToNavigation);
                             LinearLayout middleTab = (LinearLayout) tabsContainer.getChildAt(1);
                             middleTab.setBackgroundColor(COLOR_YELLOW);
                             setTextColor(middleTab, COLOR_WHITE);
                             resetOtherTabs(1);
                         } else {
-                            choosedRoute = dangerousRoute;
                             choosedColor = COLOR_RED;
+                            bundleToNavigation.putString("color", COLOR_RED+"");
+                            thirdFragment.setArguments(bundleToNavigation);
                             LinearLayout lastTab = (LinearLayout) tabsContainer.getChildAt(2);
                             lastTab.setBackgroundColor(COLOR_RED);
                             setTextColor(lastTab, COLOR_WHITE);
@@ -533,13 +540,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new FirstOptionFragment();
+                    firstFragment = new FirstOptionFragment();
+                    firstFragment.setArguments(bundleToNavigation);
+                    return firstFragment;
 
                 case 1:
-                    return new SecondOptionFragment();
+                    secondFragment = new SecondOptionFragment();
+                    return secondFragment;
 
                 case 2:
-                    return new ThirdOptionFragment();
+                    thirdFragment = new ThirdOptionFragment();
+                    return thirdFragment;
 
                 default:
                     return null;
